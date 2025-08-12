@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>管理员后台 - 无线电爱好者协会</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+        body{background:#f5f7fa;display:flex;align-items:center;justify-content:center;height:100vh}
+        .card{background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);padding:40px 60px;text-align:center;min-width:320px}
+        .logo-container{width:80px;height:80px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+        .logo-container img{width:100%;height:100%;object-fit:contain}
+        h1{color:#2196F3;margin-bottom:30px;font-size:24px}
+
+        .btn-group{display:flex;flex-direction:column;gap:12px;width:100%;max-width:220px;margin:0 auto}
+        .btn{background:#2196F3;color:#fff;border:none;padding:12px 28px;border-radius:5px;font-size:16px;cursor:pointer;transition:.3s;width:100%}
+        .btn:hover{background:#1976D2}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <h1>管理员后台</h1>
+
+        <div class="btn-group">
+            <form method="post" style="width:100%">
+                <button class="btn" name="toggle">
+                    {{ '关闭报名' if allow else '开启报名' }}
+                </button>
+            </form>
+            <form method="post" style="width:100%">
+                <button class="btn" name="toggle_edit">
+                    {{ '关闭修改' if allow_edit else '开启修改' }}
+                </button>
+            </form>
+            <a class="btn" href="/download">下载 Excel</a>
+            <a class="btn" href="{{ url_for('preview') }}">预览报名表</a>
+        </div>
+    </div>
+</body>
+</html>

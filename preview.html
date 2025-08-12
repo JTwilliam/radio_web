@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>报名表预览 - 无线电爱好者协会</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+        body{background:#f5f7fa;padding:40px 20px}
+        .card{background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);max-width:900px;margin:0 auto;padding:30px}
+        h1{color:#2196F3;text-align:center;margin-bottom:30px}
+        table{width:100%;border-collapse:collapse;margin-bottom:25px}
+        th,td{padding:12px 8px;text-align:center;border-bottom:1px solid #eee}
+        th{background:#f1f1f1;font-weight:600}
+        .btn{background:#2196F3;color:#fff;border:none;padding:8px 14px;border-radius:4px;cursor:pointer;margin:0 4px;font-size:14px;transition:.3s}
+        .btn:hover{background:#1976D2}
+        .btn.danger{background:#e53935}
+        .btn.danger:hover{background:#c62828}
+        .empty{text-align:center;color:#777;margin-bottom:20px}
+        .actions{text-align:center}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>当前报名列表</h1>
+
+        {% if records %}
+        <table>
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>学号</th>
+                    <th>第一志愿</th>
+                    <th>第二志愿</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.stu_id }}</td>
+                    <td>{{ r.first_choice }}</td>
+                    <td>{{ r.second_choice or '无' }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_one') }}" method="post" style="display:inline">
+                            <input type="hidden" name="stu_id" value="{{ r.stu_id }}">
+                            <button class="btn danger" type="submit" onclick="return confirm('确定删除该条记录吗？')">删除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <form action="{{ url_for('delete_all') }}" method="post" style="display:inline">
+                <button class="btn danger" type="submit"
+                        onclick="return confirm('⚠️ 将全部报名数据清空，确定继续？')">
+                    一键清空
+                </button>
+            </form>
+            <a href="{{ url_for('admin') }}"><button class="btn">返回后台</button></a>
+        </div>
+
+        {% else %}
+        <p class="empty">当前暂无报名记录</p>
+        <div class="actions">
+            <a href="{{ url_for('admin') }}"><button class="btn">返回后台</button></a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

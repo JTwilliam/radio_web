@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>报名 - 无线电爱好者协会</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+        body{background:#f5f7fa;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px}
+        .card{background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);padding:40px;max-width:500px;width:100%}
+        .logo-container{width:80px;height:80px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+        .logo-container img{width:100%;height:100%;object-fit:contain}
+        h1{color:#2196F3;text-align:center;margin-bottom:25px;font-size:22px}
+        label{display:block;font-weight:600;margin-bottom:6px;color:#555}
+        input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;margin-bottom:15px;font-size:16px}
+        textarea{resize:vertical;min-height:80px}
+        .btn{background:#2196F3;color:#fff;border:none;padding:12px 0;width:100%;border-radius:5px;font-size:16px;cursor:pointer;transition:.3s}
+        .btn:hover{background:#1976D2}
+        .secondary{background:#9e9e9e;margin-top:10px}
+        .secondary:hover{background:#757575}
+        .error{background:#f8d7da;color:#721c24;border-radius:5px;padding:10px;margin-bottom:15px;text-align:center}
+        .success{background:#d4edda;color:#155724;border-radius:5px;padding:10px;margin-bottom:15px;text-align:center}
+        .note{font-size:13px;color:#888;margin-top:-10px;margin-bottom:10px}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <h1>无线电爱好者协会招新</h1>
+
+        {% if closed %}
+            <div class="error">报名时间已截止，请关注后续通知。</div>
+        {% else %}
+            {% if msg %}<div class="{{ 'success' if '成功' in msg else 'error' }}">{{ msg }}</div>{% endif %}
+            <form method="post">
+                <label>姓名 *</label>
+                <input name="name" required>
+                <label>学号 *</label>
+                <input name="stu_id" required>
+                <label>专业班级 *</label>
+                <input name="major_class" required>
+                <label>第一志愿 *</label>
+                <select name="first" required>
+                    <option disabled selected value="">请选择</option>
+                    {% for v in ['科创部','新媒体运营部','组织部','外联部','宣传部'] %}
+                      <option>{{ v }}</option>
+                    {% endfor %}
+                </select>
+                <label>第二志愿</label>
+                <select name="second">
+                    <option value="">无</option>
+                    {% for v in ['科创部','新媒体运营部','组织部','外联部','宣传部'] %}
+                      <option>{{ v }}</option>
+                    {% endfor %}
+                </select>
+                <label>自我介绍（≤200字）*</label>
+                <textarea name="intro" maxlength="200" required></textarea>
+                <p class="note">请介绍你的兴趣爱好、技术知识等</p>
+                <button class="btn">提交报名</button>
+            </form>
+                       {% if not closed and allow_edit %}
+                <a href="/edit"><button class="btn secondary">我已报过名，去修改</button></a>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

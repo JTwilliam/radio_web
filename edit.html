@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>修改信息 - 无线电爱好者协会</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+        body{background:#f5f7fa;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .card{background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);padding:40px;max-width:420px;width:100%}
+        .logo-container{width:80px;height:80px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+        .logo-container img{width:100%;height:100%;object-fit:contain}
+        h1{color:#2196F3;text-align:center;margin-bottom:25px;font-size:22px}
+        label{display:block;font-weight:600;margin-bottom:6px;color:#555}
+        input{width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;margin-bottom:15px;font-size:16px}
+        .btn{background:#2196F3;color:#fff;border:none;padding:12px 0;width:100%;border-radius:5px;font-size:16px;cursor:pointer;transition:.3s}
+        .btn:hover{background:#1976D2}
+        .secondary{background:#9e9e9e;margin-top:10px}
+        .secondary:hover{background:#757575}
+        .msg{padding:10px;border-radius:5px;margin-bottom:15px;text-align:center}
+        .success{background:#d4edda;color:#155724}
+        .error{background:#f8d7da;color:#721c24}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <h1>修改报名信息</h1>
+
+        {% if closed %}
+            <div class="error">报名时间已截止，请关注后续通知。</div>
+        {% elif edit_closed %}
+            <div class="error">修改功能已关闭，当前无法修改报名信息。</div>
+        {% else %}
+            {% if msg %}<div class="{{ 'success' if '完成' in msg else 'error' }} msg">{{ msg }}</div>{% endif %}
+
+            <form method="post" action="/edit">
+                <label>姓名</label>
+                <input name="name" required>
+                <label>学号</label>
+                <input name="stu_id" required>
+                <button class="btn" type="submit">查询并修改</button>
+            </form>
+        {% endif %}
+
+        <a href="/"><button class="btn secondary">返回报名页</button></a>
+    </div>
+</body>
+</html>
